@@ -14,19 +14,20 @@ main(int argc, char **argv)
 
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(13);
+    servaddr.sin_port = htons(9999);
     
     Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
     Connect(sockfd, (SA *)&servaddr, sizeof(servaddr));
 
-    while ( (n = read(sockfd, recvline, MAXLINE)) > 0 )
+    int count = 0;
+    while ( (n = Read(sockfd, recvline, MAXLINE)) > 0 )
     {
         recvline[n] = 0;
-        Fputs("hello!\n", stdout);
+        count ++;
         Fputs(recvline, stdout);
     }
-    if (n < 0)
-        err_sys("read error");
+
+    printf("Totol read times: %d\n", count);
 
     exit(0);
 }
